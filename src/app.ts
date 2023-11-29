@@ -17,9 +17,6 @@ app.set("views", "./src/views"); // Set the directory for your views
 // Serve static files from the 'public' directory
 app.use(express.static("public"));
 
-const knexInstance = require("knex")(knexConfig);
-app.set("knex", knexInstance);
-
 // Example route rendering an EJS view
 app.get("/", async (req: express.Request, res: express.Response) => {
   res.render("index", { message: "Zdravo svete!" });

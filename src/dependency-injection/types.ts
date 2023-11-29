@@ -1,5 +1,7 @@
 const TYPES = {
-    IClubService: Symbol.for("IClubService")
+  Knex: Symbol.for("Knex"),
+  IClubService: Symbol.for("IClubService"),
+  IClubValidator: Symbol.for("IClubValidator"),
 };
 
 export { TYPES };

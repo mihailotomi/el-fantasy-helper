@@ -1,19 +1,38 @@
 import { Knex } from "knex";
 import { IClubService } from "./club-service-interface";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
+import { ClubData, ClubResponse } from "../../models";
+import axios from "axios";
+import { TYPES } from "../../dependency-injection/types";
 
 @injectable()
 export class ClubService implements IClubService {
-  async checkClubExists(code: string, knex: Knex): Promise<boolean> {
+  constructor(@inject(TYPES.Knex) private knex: Knex) {}
+
+  async createClub(clubData: ClubData): Promise<void> {
     try {
-      const result = await knex("club").where("code", code).first();
-      return !!result;
-    } catch (error: any) {
-      throw new Error(`checkClubExists: ${error?.message}`);
+      await this.knex("club").insert({
+        name: clubData.Name,
+        code: clubData.Code,
+        imageURL: clubData.Images.Crest,
+      });
+    } catch (error) {
+      throw new Error(`createClub error: ${error.message}`);
     }
   }
 
-  log(){
-    console.log('opsasaaaaaaaaaaaaa');
+  async getClubs(): Promise<ClubData[]> {
+    const url = "https://api-live.euroleague.net/v2/competitions/E/seasons/E2023/clubs?Limit=20";
+
+    try {
+      const response = await axios.get(url);
+      const jsonResponse: ClubResponse = response.data;
+
+      console.log("Total clubs:", jsonResponse.Total);
+      return jsonResponse.Data;
+    } catch (error) {
+      console.error("Error making HTTP request or parsing JSON:", error.message);
+      throw error;
+    }
   }
 }
