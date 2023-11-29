@@ -1,7 +1,10 @@
-import * as dotenv from 'dotenv';
-import { myContainer } from './dependency-injection/inversify.config';
-import { IClubService } from './services/club/club-service-interface';
-import { TYPES } from './dependency-injection/types';
+import app from "./app";
+import * as dotenv from "dotenv";
+
 dotenv.config();
 
-const clubService = myContainer.get<IClubService>(TYPES.IClubService);
+const port = 3000;
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
