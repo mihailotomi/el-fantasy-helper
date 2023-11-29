@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5430:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: fantasy
+      POSTGRES_USER: fantasy
+      POSTGRES_PASSWORD: password
+
+volumes:
+  data:
